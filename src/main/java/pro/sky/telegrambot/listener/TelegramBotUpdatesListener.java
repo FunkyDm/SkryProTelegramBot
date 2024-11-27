@@ -24,11 +24,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
+    TelegramBot bot = new TelegramBot("");
+
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
             // Process your updates here
+            update.message().text();
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
