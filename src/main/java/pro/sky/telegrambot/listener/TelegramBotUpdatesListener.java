@@ -28,7 +28,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @Override
     public int process(List<Update> updates) {
-        telegramBot = new TelegramBot("${telegram.bot.token}");
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
@@ -38,7 +37,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                 logger.info(update.message().text());
 
-                if (userMessage.equalsIgnoreCase("/start")) {
+                if (userMessage.equals("/start")) {
                     SendMessage sendMessage = new SendMessage(chatId, "Добро пожаловать!!!!!");
                     telegramBot.execute(sendMessage);
                 } else {
