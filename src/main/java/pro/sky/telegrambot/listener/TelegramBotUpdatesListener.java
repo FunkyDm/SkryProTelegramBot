@@ -3,6 +3,8 @@ package pro.sky.telegrambot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +26,26 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
-    TelegramBot bot = new TelegramBot("");
-
     @Override
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            // Process your updates here
-            update.message().text();
+
+            if (update.message() != null && update.message().text() != null) {
+                long chatId = update.message().chat().id();
+                String userMessage = update.message().text();
+
+                logger.info(update.message().text());
+
+                if (userMessage.equals("/start")) {
+                    SendMessage sendMessage = new SendMessage(chatId, "Добро пожаловать!!!!!");
+                    telegramBot.execute(sendMessage);
+                } else {
+                    SendMessage sendMessage = new SendMessage(chatId, "Кажется, вы написали что-то в духе: " + userMessage);
+                    telegramBot.execute(sendMessage);
+                }
+            }
+
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
