@@ -1,7 +1,10 @@
 package pro.sky.telegrambot.command;
 
 public enum CommandName {
-    START("/start");
+    START("/start"),
+    STOP("/stop"),
+    NOTIFY("/notify");
+
 
     private final String commandName;
 
