@@ -1,6 +1,8 @@
 package pro.sky.telegrambot.state;
 
 public enum State {
-    IN_WORK,
+    NONE,
+    DEFAULT,
+    START,
     IN_WORK_WITH_NOTIFICATION;
 }
