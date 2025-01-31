@@ -13,7 +13,7 @@ public class BotMessageServiceImpl implements BotMessageService{
     }
 
     @Override
-    public void sendMessage(String chatId, String message) {
+    public void sendMessage(Long chatId, String message) {
         SendMessage sendMessage = new SendMessage(chatId, message);
 
         try {
