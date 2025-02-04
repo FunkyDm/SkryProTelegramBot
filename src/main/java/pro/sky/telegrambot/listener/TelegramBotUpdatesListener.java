@@ -9,14 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.telegrambot.command.CommandContainer;
+import pro.sky.telegrambot.service.BotMessageServiceImpl;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+import static pro.sky.telegrambot.command.CommandName.*;
+
 @Service
 public class TelegramBotUpdatesListener implements UpdatesListener {
+    public static String COMMAND_PREFIX = "/";
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+
+    @Autowired
+    private CommandContainer commandContainer;
 
     @Autowired
     private TelegramBot telegramBot;
@@ -32,17 +40,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             logger.info("Processing update: {}", update);
 
             if (update.message() != null && update.message().text() != null) {
-                long chatId = update.message().chat().id();
-                String userMessage = update.message().text();
+                String message = update.message().text().toString().trim();
+                if (message.startsWith(COMMAND_PREFIX)) {
+                    String commandIdentifier = message.split(" ")[0].toLowerCase();
 
-                logger.info(update.message().text());
-
-                if (userMessage.equals("/start")) {
-                    SendMessage sendMessage = new SendMessage(chatId, "Добро пожаловать!!!!!");
-                    telegramBot.execute(sendMessage);
+                    commandContainer.retrieveCommand(commandIdentifier).handle(update);
                 } else {
-                    SendMessage sendMessage = new SendMessage(chatId, "Кажется, вы написали что-то в духе: " + userMessage);
-                    telegramBot.execute(sendMessage);
+                    commandContainer.retrieveCommand(NO.getCommandName()).handle(update);
                 }
             }
 

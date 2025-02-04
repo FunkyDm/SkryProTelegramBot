@@ -7,7 +7,7 @@ public class UserStateStorage {
     private static final Map<Long, State> userStates = new HashMap<>();
 
     public static State getState(Long chatId){
-        return userStates.getOrDefault(chatId, State.DEFAULT);
+        return userStates.getOrDefault(chatId, State.WORK);
     }
 
     public static void setState(Long chatId, State state){

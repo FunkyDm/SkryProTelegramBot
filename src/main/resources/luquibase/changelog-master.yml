@@ -1,3 +1,3 @@
 databaseChangeLog:
   - include:
-      file: luquibase/scripts/create-column-time.sql
+      file: luquibase/scripts/drop-column-time2.sql

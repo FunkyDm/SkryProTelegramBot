@@ -3,14 +3,12 @@ package pro.sky.telegrambot.service;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class BotMessageServiceImpl implements BotMessageService{
-    private final TelegramBot telegramBot;
-
     @Autowired
-    public BotMessageServiceImpl(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
+    private TelegramBot telegramBot;
 
     @Override
     public void sendMessage(Long chatId, String message) {
