@@ -3,14 +3,18 @@ package pro.sky.telegrambot.state;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserStateStorage {
-    private static final Map<Long, State> userStates = new HashMap<>();
+public enum UserStateStorage {
+    NONE,
+    WORK,
+    IN_WORK_WITH_NOTIFICATION;
 
-    public static State getState(Long chatId){
-        return userStates.getOrDefault(chatId, State.WORK);
+    private static final Map<Long, UserStateStorage> userStates = new HashMap<>();
+
+    public static UserStateStorage getState(Long chatId){
+        return userStates.getOrDefault(chatId, WORK);
     }
 
-    public static void setState(Long chatId, State state){
+    public static void setState(Long chatId, UserStateStorage state){
         userStates.put(chatId, state);
     }
 }

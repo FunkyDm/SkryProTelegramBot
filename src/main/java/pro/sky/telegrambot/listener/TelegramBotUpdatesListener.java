@@ -40,10 +40,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             logger.info("Processing update: {}", update);
 
             if (update.message() != null && update.message().text() != null) {
-                String message = update.message().text().toString().trim();
+                String message = update.message().text().trim();
                 if (message.startsWith(COMMAND_PREFIX)) {
                     String commandIdentifier = message.split(" ")[0].toLowerCase();
-
                     commandContainer.retrieveCommand(commandIdentifier).handle(update);
                 } else {
                     commandContainer.retrieveCommand(NO.getCommandName()).handle(update);

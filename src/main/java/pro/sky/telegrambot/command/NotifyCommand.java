@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import pro.sky.telegrambot.model.Task;
 import pro.sky.telegrambot.repository.TaskRepository;
 import pro.sky.telegrambot.service.BotMessageService;
-import pro.sky.telegrambot.state.State;
 import pro.sky.telegrambot.state.UserStateStorage;
 
 import java.time.LocalDateTime;
@@ -17,10 +16,10 @@ import java.util.regex.Pattern;
 
 @Component
 public class NotifyCommand implements Command {
-    private final BotMessageService botMessageService;
-
     @Autowired
     private TaskRepository taskRepository;
+
+    private final BotMessageService botMessageService;
 
     public NotifyCommand(BotMessageService botMessageService) {
         this.botMessageService = botMessageService;
@@ -31,14 +30,14 @@ public class NotifyCommand implements Command {
         Long chatId = update.message().chat().id();
         String messageText = update.message().text();
 
-        State currentState = UserStateStorage.getState(chatId);
+        UserStateStorage currentState = UserStateStorage.getState(chatId);
 
-        if (messageText.equals(getCommand()) && currentState == State.WORK) {
+        if (messageText.equals(getCommand()) && currentState == UserStateStorage.WORK) {
             botMessageService.sendMessage(chatId, "Отправьте напоминание в формате: ДД.ММ.ГГГГ ЧЧ:ММ Текст напоминания");
-            UserStateStorage.setState(chatId, State.IN_WORK_WITH_NOTIFICATION);
+            UserStateStorage.setState(chatId, UserStateStorage.IN_WORK_WITH_NOTIFICATION);
         }
 
-        if (currentState == State.IN_WORK_WITH_NOTIFICATION) {
+        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
             Pattern pattern = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{4}\\s\\d{2}:\\d{2})(\\s+)(.+)");
             Matcher matcher = pattern.matcher(messageText);
 
@@ -55,7 +54,7 @@ public class NotifyCommand implements Command {
 
                 botMessageService.sendMessage(chatId, String.format("Напоминание добавлено: %s %s", dateTimeString, matcher.group(3)));
 
-                UserStateStorage.setState(chatId, State.WORK);
+                UserStateStorage.setState(chatId, UserStateStorage.WORK);
             } else {
                 botMessageService.sendMessage(chatId, "Неверный формат напоминания. Используйте формат: ДД.ММ.ГГГГ ЧЧ:ММ Текст напоминания");
             }
