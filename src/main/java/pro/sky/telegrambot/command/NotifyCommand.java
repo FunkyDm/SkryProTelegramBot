@@ -2,6 +2,8 @@ package pro.sky.telegrambot.command;
 
 
 import com.pengrad.telegrambot.model.Update;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.telegrambot.model.Task;
@@ -25,16 +27,25 @@ public class NotifyCommand implements Command {
         this.botMessageService = botMessageService;
     }
 
+    private Logger logger = LoggerFactory.getLogger(NotifyCommand.class);
+
     @Override
     public void handle(Update update) {
         Long chatId = update.message().chat().id();
         String messageText = update.message().text();
-
         UserStateStorage currentState = UserStateStorage.getState(chatId);
 
+        logger.info("Current state for chatId {}: {}", chatId, currentState);
+
         if (messageText.equals(getCommand()) && currentState == UserStateStorage.WORK) {
+            logger.info("Command /notify received for chatId: {}", chatId);
+
             botMessageService.sendMessage(chatId, "Отправьте напоминание в формате: ДД.ММ.ГГГГ ЧЧ:ММ Текст напоминания");
+
+            logger.info("Sent message: Отправьте напоминание в формате: ДД.ММ.ГГГГ ЧЧ:ММ Текст напоминания")
+
             UserStateStorage.setState(chatId, UserStateStorage.IN_WORK_WITH_NOTIFICATION);
+
         }
 
         if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
@@ -53,7 +64,6 @@ public class NotifyCommand implements Command {
                 ));
 
                 botMessageService.sendMessage(chatId, String.format("Напоминание добавлено: %s %s", dateTimeString, matcher.group(3)));
-
                 UserStateStorage.setState(chatId, UserStateStorage.WORK);
             } else {
                 botMessageService.sendMessage(chatId, "Неверный формат напоминания. Используйте формат: ДД.ММ.ГГГГ ЧЧ:ММ Текст напоминания");
