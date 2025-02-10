@@ -46,7 +46,7 @@ public class NotifyCommand implements Command {
             logger.info("User state set to IN_WORK_WITH_NOTIFICATION for chatId: {}", chatId);
         }
 
-        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
+        if (UserStateStorage.getState(chatId) == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
             logger.info("Entered WAITING_FOR_NOTIFICATION state for chatID: {}", chatId);
 
             Pattern pattern = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{4}\\s\\d{2}:\\d{2})(\\s+)(.+)");

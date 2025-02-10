@@ -2,6 +2,8 @@ package pro.sky.telegrambot.command;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.telegrambot.service.BotMessageService;
@@ -12,7 +14,7 @@ public class StartCommand implements Command {
     @Autowired
     private TelegramBot telegramBot;
 
-    //private Logger logger = LoggerFactory.getLogger(StartCommand.class);
+    private Logger logger = LoggerFactory.getLogger(StartCommand.class);
 
     private final BotMessageService botMessageService;
 
@@ -30,8 +32,10 @@ public class StartCommand implements Command {
         String text = username + START_MESSAGE;
 
         botMessageService.sendMessage(chatId, text);
+        logger.info("Sent message: {}", text);
 
         UserStateStorage.setState(chatId, UserStateStorage.WORK);
+        logger.info("User state set to WORK for chatId: {}", chatId);
     }
 
     @Override
