@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pro.sky.telegrambot.command.CommandContainer;
+import pro.sky.telegrambot.command.NotifyCommand;
 import pro.sky.telegrambot.service.BotMessageServiceImpl;
+import pro.sky.telegrambot.state.UserStateStorage;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -39,7 +41,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
-            if (update.message() != null && update.message().text() != null) {
+            if (notifyCheck(update)) {
+                commandContainer.retrieveCommand("/notify").handle(update);
+            } else if (update.message() != null && update.message().text() != null) {
                 String message = update.message().text().trim();
                 if (message.startsWith(COMMAND_PREFIX)) {
                     String commandIdentifier = message.split(" ")[0].toLowerCase();
@@ -51,6 +55,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    private boolean notifyCheck(Update update) {
+        Long chatId = update.message().chat().id();
+        UserStateStorage currentState = UserStateStorage.getState(chatId);
+        logger.info("Current state for chatId {}: {}", chatId, currentState);
+        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
+            return true;
+        }
+        return false;
     }
 
 }

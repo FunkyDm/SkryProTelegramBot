@@ -20,7 +20,7 @@ public class UnknownCommand implements Command{
         String username = update.message().chat().firstName();
         String userMessage = update.message().text();
         botMessageService.sendMessage(chatId, String.format(username + "кажется, вы написали что-то в духе: " + userMessage));
-        logger.info("Sent message: {}, {}", username, userMessage);
+        logger.info("Sent message: {}, кажется, вы написали что-то в духе: {}", username, userMessage);
     }
 
     @Override

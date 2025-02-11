@@ -18,13 +18,13 @@ import java.util.regex.Pattern;
 
 @Component
 public class NotifyCommand implements Command {
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
     private final BotMessageService botMessageService;
 
-    public NotifyCommand(BotMessageService botMessageService) {
+    public NotifyCommand(BotMessageService botMessageService, TaskRepository taskRepository) {
         this.botMessageService = botMessageService;
+        this.taskRepository = taskRepository;
     }
 
     private Logger logger = LoggerFactory.getLogger(NotifyCommand.class);
@@ -46,7 +46,7 @@ public class NotifyCommand implements Command {
             logger.info("User state set to IN_WORK_WITH_NOTIFICATION for chatId: {}", chatId);
         }
 
-        if (UserStateStorage.getState(chatId) == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
+        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
             logger.info("Entered WAITING_FOR_NOTIFICATION state for chatID: {}", chatId);
 
             Pattern pattern = Pattern.compile("(\\d{2}\\.\\d{2}\\.\\d{4}\\s\\d{2}:\\d{2})(\\s+)(.+)");
