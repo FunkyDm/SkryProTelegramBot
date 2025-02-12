@@ -52,6 +52,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     commandContainer.retrieveCommand(NO.getCommandName()).handle(update);
                 }
             }
+            else{
+                commandContainer.retrieveCommand("hello");
+            }
 
         });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
@@ -59,9 +62,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private boolean notifyCheck(Update update) {
         Long chatId = update.message().chat().id();
+        String text = update.message().text();
         UserStateStorage currentState = UserStateStorage.getState(chatId);
         logger.info("Current state for chatId {}: {}", chatId, currentState);
-        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION) {
+        if (currentState == UserStateStorage.IN_WORK_WITH_NOTIFICATION && !text.equals("/exit")) {
             return true;
         }
         return false;

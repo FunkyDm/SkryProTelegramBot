@@ -3,8 +3,9 @@ package pro.sky.telegrambot.command;
 public enum CommandName {
     START("/start"),
     HELP("/help"),
-    STOP("/stop"),
+    EXIT("/exit"),
     NO("unknown command"),
+    HELLO("hello"),
     NOTIFY("/notify");
 
     private final String commandName;

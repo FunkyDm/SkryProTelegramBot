@@ -19,8 +19,8 @@ public class UnknownCommand implements Command{
         Long chatId = update.message().chat().id();
         String username = update.message().chat().firstName();
         String userMessage = update.message().text();
-        botMessageService.sendMessage(chatId, String.format(username + "кажется, вы написали что-то в духе: " + userMessage));
-        logger.info("Sent message: {}, кажется, вы написали что-то в духе: {}", username, userMessage);
+        botMessageService.sendMessage(chatId, String.format(username + "кажется, вы написали что-то в духе: " + userMessage + "\nВведите /start для начала работы с ботом"));
+        logger.info("Sent message: {}, кажется, вы написали что-то в духе: {}\nВведите /start для начала работы с ботом", username, userMessage);
     }
 
     @Override

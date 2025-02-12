@@ -20,10 +20,14 @@ public class Task {
     @Column(name = "task_date")
     LocalDateTime taskDate;
 
-    public Task(long chatId, String messageText, LocalDateTime taskDate) {
+    @Column(name = "status")
+    private String status;
+
+    public Task(long chatId, String messageText, LocalDateTime taskDate, String status) {
         this.chatId = chatId;
         this.messageText = messageText;
         this.taskDate = taskDate;
+        this.status = status;
     }
 
     public Task() {
@@ -59,6 +63,14 @@ public class Task {
 
     public void setTaskDate(LocalDateTime taskDate) {
         this.taskDate = taskDate;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 
 }

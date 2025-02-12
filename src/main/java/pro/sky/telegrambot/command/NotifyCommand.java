@@ -62,7 +62,8 @@ public class NotifyCommand implements Command {
                 taskRepository.save(new Task(
                         chatId,
                         matcher.group(3),
-                        date
+                        date,
+                        "no"
                 ));
                 logger.info("Notification task saved for chatID: {}, notification: {}, date: {}", chatId, matcher.group(3), date);
 

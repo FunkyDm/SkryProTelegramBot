@@ -1,7 +1,6 @@
 package pro.sky.telegrambot.command;
 
 import com.google.common.collect.ImmutableMap;
-import liquibase.pro.packaged.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pro.sky.telegrambot.repository.TaskRepository;
@@ -21,6 +20,9 @@ public class CommandContainer {
         commandMap = ImmutableMap.<String, Command>builder()
                 .put(START.getCommandName(), new StartCommand(botMessageService))
                 .put(NOTIFY.getCommandName(), new NotifyCommand(botMessageService, taskRepository))
+                .put(EXIT.getCommandName(), new ExitCommand(botMessageService))
+                .put(HELP.getCommandName(), new HelpCommand(botMessageService))
+                .put(HELLO.getCommandName(), new HelloCommand(botMessageService))
                 .build();
 
         unknownCommand = new UnknownCommand(botMessageService);
