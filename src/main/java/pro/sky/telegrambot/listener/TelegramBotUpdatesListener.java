@@ -41,6 +41,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
 
+
             if (notifyCheck(update)) {
                 commandContainer.retrieveCommand("/notify").handle(update);
             } else if (update.message() != null && update.message().text() != null) {
