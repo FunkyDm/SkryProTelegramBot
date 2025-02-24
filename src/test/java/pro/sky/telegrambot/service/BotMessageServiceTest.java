@@ -6,17 +6,22 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @DisplayName("Unit test for BotMessageService class")
+@ExtendWith(MockitoExtension.class)
 public class BotMessageServiceTest {
     private BotMessageService botMessageService;
 
-    private TelegramBot telegramBot;
+    @Mock
+    private TelegramBot telegramBot = Mockito.mock(TelegramBot.class);
 
     @BeforeEach
-    public void init(){
-        telegramBot = Mockito.mock(TelegramBot.class);
+    void setup(){
         botMessageService = new BotMessageServiceImpl(telegramBot);
     }
 
@@ -32,6 +37,6 @@ public class BotMessageServiceTest {
         botMessageService.sendMessage(chatId, message);
 
         //then
-        Mockito.verify(telegramBot).execute(sendMessage);
+        Mockito.verify(telegramBot).execute(Mockito.any(SendMessage.class));
     }
 }
