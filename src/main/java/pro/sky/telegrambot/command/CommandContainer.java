@@ -22,7 +22,6 @@ public class CommandContainer {
                 .put(NOTIFY.getCommandName(), new NotifyCommand(botMessageService, taskRepository))
                 .put(EXIT.getCommandName(), new ExitCommand(botMessageService))
                 .put(HELP.getCommandName(), new HelpCommand(botMessageService))
-                .put(HELLO.getCommandName(), new HelloCommand(botMessageService))
                 .build();
 
         unknownCommand = new UnknownCommand(botMessageService);

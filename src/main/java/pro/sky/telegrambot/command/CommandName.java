@@ -4,8 +4,6 @@ public enum CommandName {
     START("/start"),
     HELP("/help"),
     EXIT("/exit"),
-    NO("unknown command"),
-    HELLO("hello"),
     NOTIFY("/notify");
 
     private final String commandName;
