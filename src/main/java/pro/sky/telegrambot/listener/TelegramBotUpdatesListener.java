@@ -50,7 +50,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     String commandIdentifier = message.split(" ")[0].toLowerCase();
                     commandContainer.retrieveCommand(commandIdentifier).handle(update);
                 } else {
-                    commandContainer.retrieveCommand("unknown command");
+                    commandContainer.retrieveCommand("unknown command").handle(update);
                 }
             }
 

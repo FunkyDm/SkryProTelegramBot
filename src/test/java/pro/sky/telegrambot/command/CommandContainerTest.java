@@ -4,12 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pro.sky.telegrambot.repository.TaskRepository;
 import pro.sky.telegrambot.service.BotMessageService;
 
 import java.util.Arrays;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayName("Unit-level testing for CommandContainer")
 public class CommandContainerTest {
     private CommandContainer commandContainer;
